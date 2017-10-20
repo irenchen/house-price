@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>房屋估價系統</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  </head>
+  <body>
+    <div class="conatiner">
+        <h1>房屋估價查詢</h1>
+        <div id="slick">
+          <div><img src="images/pic01.jpg" alt="pic01"></div>
+          <div><img src="images/pic02.jpg" alt="pic02"></div>
+          <div><img src="images/pic03.jpg" alt="pic03"></div>
+        </div>
+    </div>
+
+    <div style="margin-top:50px;"></div>
+
+    <div class="container">
+      <form id="queryForm" action="">
+        <div class="row">
+            <div class="col-md-4 form-group">
+                <label for="city">縣市</label>
+                <select name="city" id="city" class="form-control" required>
+                  <option value="1">台北市</option>
+                  <option value="2">新北市</option>
+                  <option value="3">桃園市</option>
+                  <option value="4">台中市</option>
+                  <option value="5">台南市</option>
+                  <option value="6">高雄市</option>
+                  <option value="7">新竹市</option>
+                  <option value="8">新竹縣</option>
+                  <option value="9">基隆市</option>
+                  <option value="10">嘉義市</option>
+                  <option value="11">嘉義縣</option>
+                  <option value="12">宜蘭縣</option>
+                  <option value="13">花蓮縣</option>
+                  <option value="14">苗栗縣</option>
+                  <option value="15">彰化縣</option>
+                  <option value="16">南投縣</option>
+                  <option value="17">雲林縣</option>
+                  <option value="18">屏東縣</option>
+                </select>
+            </div>
+            <div class="col-md-4 form-group">
+              <label for="district">行政區</label>
+              <select name="district" id="district" class="form-control" required>
+                <option value="1">中正區</option>
+                <option value="2">大同區</option>
+                <option value="3">中山區</option>
+                <option value="4">松山區</option>
+                <option value="5">大安區</option>
+                <option value="6">萬華區</option>
+                <option value="7">信義區</option>
+                <option value="8">士林區</option>
+                <option value="9">北投區</option>
+                <option value="10">內湖區</option>
+                <option value="11">南港區</option>
+                <option value="12">文山區</option>
+              </select>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 form-group">
+            <label for="address">完整地址</label>
+            <input type="text" name="address" id="address" 
+                   class="form-control" placeholder="test" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 control-group">
+            <label for="category">房屋類型</label>
+            <select name="category" id="category" class="form-control" required>
+              <option value="1">套房</option>
+              <option value="2">公寓(5層含以下無電梯)</option>
+              <option value="3">華廈(10層含以下有電梯)</option>
+              <option value="4">住宅大樓(11層含以上有電梯)</option>
+              <option value="5">透天</option>
+            </select>
+          </div>
+          <div class="col-md-2 form-group">
+            <label for="story">樓層總數</label>
+            <input type="number" class="form-control" 
+                   name="story" id="story" required>
+          </div>
+          <div class="col-md-2 form-group">
+              <label for="floor">所在樓層</label>
+              <input type="number" class="form-control" 
+                     name="floor" id="floor" required>
+          </div>
+          <div class="col-md-2 form-group">
+              <label for="age">屋齡</label>
+              <input type="number" class="form-control" 
+                     name="age" id="age" required>
+          </div>
+          <div class="col-md-2 form-group">
+              <label for="acre">坪數</label>
+              <input type="number" class="form-control" 
+                     name="acre" id="acre" value="30" required>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 form-group">
+                <label for="park1">平面停車位</label>
+                <input type="number" class="form-control" 
+                       name="park1" id="park1" value="0" required>
+            </div>
+            <div class="col-md-2 form-group">
+                <label for="park2">機械停車位</label>
+                <input type="number" class="form-control" 
+                       name="park2" id="park2" value="0" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 checkbox">
+                <label for="managed">
+                  <input type="checkbox" name="managed">有管理
+                </label>
+              </div>
+              <div id="submit" class="col-md-4">
+                  <button class="btn btn-default">Submit</button>
+              </div>
+              <div id="wait" class="col-md-4 hidden">
+                  查詢中...
+              </div>
+        </div>
+
+      </form>
+      <div class="container" id="history">
+        查詢紀錄
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script>
+      $(function() {
+        $('#slick').slick({
+          autoplay: true,
+          autoplaySpeed: 2000,
+          pauseOnFocus: true,
+          pauseOnHover: true,
+          dots: true,
+          arrows: false,
+
+        })
+
+        $('form').on('submit', function(evt) {
+          $('#submit').addClass('hidden')
+          $('#wait').removeClass('hidden')
+          evt.preventDefault()
+          var form = document.getElementById('queryForm')
+          var formData = new FormData(form)
+
+          $.ajax({
+            url: '/query/opt1',
+            method: 'POST',
+            data: $('#queryForm').serializeArray(),
+            success: function(res) {
+              console.log(res)
+              $('#submit').removeClass('hidden')
+              $('#wait').addClass('hidden')
+            },
+            err: function(err) {
+              console.log(err)
+              $('#submit').removeClass('hidden')
+              $('#wait').addClass('hidden')
+            }
+          })
+          // fetch('/query/opt1', {
+          //   method: 'POST',
+          //   body: formData
+          // })
+          // .then(res => res.json())
+          // .then(data => {
+          //   console.log(data)
+          // })
+          // .catch(console.log)
+
+        })
+      })
+    </script>
+  </body>
+</html>

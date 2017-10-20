@@ -1,0 +1,14 @@
+
+git init
+
+# create an heroku personal app
+heroku create
+
+git add .
+
+git commit -m '...'
+
+# deploy app to heroku cloud server
+git push heroku master
+
+
