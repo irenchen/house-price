@@ -1,4 +1,7 @@
+# development
+nodemon bin/www
 
+# production
 git init
 
 # create an heroku personal app

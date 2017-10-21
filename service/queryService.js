@@ -2,14 +2,15 @@ const phantomjs = require('phantomjs-prebuilt')
 
 function query1(fields) {
     return new Promise((resolve, reject) => {
+        console.log(JSON.stringify(fields))
         var program = phantomjs.exec('./service/query1.js', JSON.stringify(fields))
         // program.stdout.pipe(process.stdout)
         // program.stderr.pipe(process.stderr)
         program.stdout.on('data', data => {
             var msg = data.toString('utf8')
-            console.log(data.toString('utf8'))
+            console.log(msg)
             if(/result/i.test(msg)) {
-                resolve(msg)
+                resolve(msg.slice(9))
             }
         })
         program.stderr.on('data', err => {

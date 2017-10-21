@@ -127,11 +127,23 @@
               <div id="wait" class="col-md-4 hidden">
                   查詢中...
               </div>
+              <div class="col-md-4">
+                <span id="result"></span>
+              </div>
         </div>
 
       </form>
       <div class="container" id="history">
         查詢紀錄
+      </div>
+
+      <div>
+        <div>
+            <img src="images/query01.png" alt="query01" id="img1">
+        </div>
+        <div>
+            <img src="images/query02.png" alt="query02" id="img2">
+        </div>        
       </div>
     </div>
 
@@ -152,39 +164,80 @@
         })
 
         $('form').on('submit', function(evt) {
+          $('#result').empty()
           $('#submit').addClass('hidden')
           $('#wait').removeClass('hidden')
           evt.preventDefault()
           var form = document.getElementById('queryForm')
           var formData = new FormData(form)
 
-          $.ajax({
-            url: '/query/opt1',
+        //   $.ajax({
+        //     url: '/query/opt1',
+        //     method: 'POST',
+        //     data: $('#queryForm').serializeArray(),
+        //     success: function(res) {
+        //       console.log(res)
+        //       if(res.result) {
+        //         $('#result').html(res.result)
+        //       }
+        //       $('#submit').removeClass('hidden')
+        //       $('#wait').addClass('hidden')
+        //     },
+        //     err: function(err) {
+        //       console.log(err)
+        //       $('#submit').removeClass('hidden')
+        //       $('#wait').addClass('hidden')
+        //     }
+        //   })
+
+          fetch('/query/opt2', {
             method: 'POST',
-            data: $('#queryForm').serializeArray(),
-            success: function(res) {
-              console.log(res)
-              $('#submit').removeClass('hidden')
-              $('#wait').addClass('hidden')
-            },
-            err: function(err) {
-              console.log(err)
-              $('#submit').removeClass('hidden')
-              $('#wait').addClass('hidden')
-            }
+            body: formData
           })
-          // fetch('/query/opt1', {
-          //   method: 'POST',
-          //   body: formData
-          // })
-          // .then(res => res.json())
-          // .then(data => {
-          //   console.log(data)
-          // })
-          // .catch(console.log)
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            $('#result').html(data.result)
+            $('#submit').removeClass('hidden')
+            $('#wait').addClass('hidden')
+            // return fetch('/images/query01.png')
+            return fetch('/image1')
+          })
+          .then(res => res.blob())
+          .then(blob => {
+            var objectURL = URL.createObjectURL(blob)
+            document.getElementById('img1').src = objectURL
+            return delay(3000)
+          })
+          .then(() => {
+            return fetch('/images/query02.png')
+          })
+          .then(res => res.blob())
+          .then(blob => {
+            var objectURL = URL.createObjectURL(blob)
+            document.getElementById('img2').src = objectURL
+          })          
+          .catch(console.log)
 
         })
+
+        // fetch('/images/query01.png')
+        //   .then(res => res.blob())
+        //   .then(blob => {
+        //     var objectURL = URL.createObjectURL(blob)
+        //     document.getElementById('img1').src = objectURL
+        //   })
+        //   .catch(console.log)
+          
       })
+
+      function delay(duration) {
+        return new Promise((resolve, reject) => {
+          setTimeout(function() {
+            resolve('done')
+          }, duration)
+        })
+      }
     </script>
   </body>
 </html>

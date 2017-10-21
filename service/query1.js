@@ -36,7 +36,9 @@ if(fs.isFile(CookieJar))
     });
 
 
-
+var settings = {
+    encoding: 'utf8',
+}
 page.open(url, function(status) {
     console.log('open url ... status : ', status)
     if(status === 'success') {
@@ -62,17 +64,17 @@ page.open(url, function(status) {
             ss[1].dispatchEvent(evt1)
 
             // 建物種類
-            ss[2].selectedIndex = 1
+            ss[2].selectedIndex = parseInt(fields.category)
             var evt2 = new Event('change')
             ss[2].dispatchEvent(evt2)
 
             // 總樓層
-            ss[3].selectedIndex = 10
+            ss[3].selectedIndex = parseInt(fields.story)
             var evt3 = new Event('change')
             ss[3].dispatchEvent(evt3)
 
             // 所在樓層
-            ss[4].selectedIndex = 5
+            ss[4].selectedIndex = parseInt(fields.floor) - 1
             var evt4 = new Event('change')
             ss[4].dispatchEvent(evt4)
 
@@ -87,29 +89,31 @@ page.open(url, function(status) {
             ss[6].dispatchEvent(evt6)
 
             // 平面停車位
-            ss[7].selectedIndex = 1
+            ss[7].selectedIndex = parseInt(fields.park1) + 1
             var evt7 = new Event('change')
             ss[7].dispatchEvent(evt7)
 
             // 機械停車位
-            ss[8].selectedIndex = 1
+            ss[8].selectedIndex = parseInt(fields.park2) + 1
             var evt8 = new Event('change')
             ss[8].dispatchEvent(evt8)
             
 
             var ii9 = document.querySelector('input[ng-model="form_model.address"]')
             // ii9.value = '市府路1號'
-            ii9.value = '台北市信義區吳興街513巷12-1號'
+            ii9.value = fields.address
             var evt9 = new Event('change')
             ii9.dispatchEvent(evt9)
 
+            // 屋齡
             var ii10 = document.querySelector('input[ng-model="form_model.age"]')
-            ii10.value = 5
+            ii10.value = parseInt(fields.age)
             var evt10 = new Event('change')
             ii10.dispatchEvent(evt10)
 
+            // 坪數
             var ii11 = document.querySelector('input[ng-model="form_model.area"]')
-            ii11.value = 20
+            ii11.value = parseInt(fields.acre)
             var evt11 = new Event('change')
             ii11.dispatchEvent(evt11)
 
@@ -118,9 +122,10 @@ page.open(url, function(status) {
             // console.log(btn.innerHTML)
             btn.click()
         }, fields)
-        page.render('./service/query01.png')
+        page.render('./public/images/query01.png')
 
         // wait for a second to check the result
+        // 讀取結果頁面
         window.setTimeout(function () {            
             page.evaluate(function() {
                 // check query limit
@@ -129,16 +134,19 @@ page.open(url, function(status) {
                     console.log('result = ', warn.innerHTML.trim())
                 } else {
                     // check result
-                    var result = document.getElementById('result')
-                    var pp = result.querySelectorAll('p.total')
-                    var span = pp[pp.length - 1].querySelector('span')
-                    console.log('result = ', span.innerHTML.trim())
+                    var pp = document.querySelectorAll('p.total')
+                    // loop through pp
+                    for(var i = 0; i < pp.length; i++) {
+                        if(/總價/.test(pp[i].innerHTML)) {
+                            var span = pp[i].querySelector('span')
+                            console.log('result = ', span.innerHTML.trim())                            
+                        }
+                    }
                 }
-
             })
-            page.render('./service/query02.png')
+            page.render('./public/images/query02.png')
             phantom.exit()
-        }, 1000); // the duration can be adjusted later
+        }, 2000); // the duration can be adjusted later
     } else {
         phantom.exit()
     }
