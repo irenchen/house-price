@@ -134,7 +134,31 @@
 
       </form>
       <div class="container" id="history">
-        查詢紀錄
+        <h3 id="toggleHistory" style="text-align:center;cursor:pointer;">
+          查詢紀錄(展開)
+        </h3>
+        <table class="table" id="historyTable">
+          <thead>
+              <tr>
+                  <th>No.</th>
+                  <th>縣市</th>
+                  <th>行政區</th>
+                  <th>完整地址</th>
+                  <th>房屋類型</th>
+                  <th>樓層總數</th>
+                  <th>所在樓層</th>
+                  <th>屋齡</th>
+                  <th>坪數</th>
+                  <th>平面車位</th>
+                  <th>機械車位</th>
+                  <th>房屋總價</th>
+                </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+
+        </table>
       </div>
 
       <div>
@@ -153,6 +177,8 @@
 
     <script>
       $(function() {
+        var queryHistory = refreshHistory()
+
         $('#slick').slick({
           autoplay: true,
           autoplaySpeed: 2000,
@@ -170,6 +196,11 @@
           evt.preventDefault()
           var form = document.getElementById('queryForm')
           var formData = new FormData(form)
+          
+
+          var queryTime = new Date().getTime()
+          var queryString = $(this).serialize()
+          var record = { queryTime, queryString }
 
         //   $.ajax({
         //     url: '/query/opt1',
@@ -200,6 +231,16 @@
             $('#result').html(data.result)
             $('#submit').removeClass('hidden')
             $('#wait').addClass('hidden')
+
+            if(data.result.includes('萬')) {
+              // update localStorage queryHistory
+              record.queryResult = data.result
+              console.log(record)
+              queryHistory.push(record)
+              localStorage.setItem("queryHistory", JSON.stringify(queryHistory))
+              refreshHistory()
+            }
+
             // return fetch('/images/query01.png')
             return fetch('/image1')
           })
@@ -220,15 +261,17 @@
           .catch(console.log)
 
         })
-
-        // fetch('/images/query01.png')
-        //   .then(res => res.blob())
-        //   .then(blob => {
-        //     var objectURL = URL.createObjectURL(blob)
-        //     document.getElementById('img1').src = objectURL
-        //   })
-        //   .catch(console.log)
           
+      })
+
+      $('#historyTable').hide()
+      $('#toggleHistory').on('click', evt => {
+        if($('#toggleHistory').text().includes('展開')) {
+          $('#toggleHistory').text('查詢紀錄(隱藏)')
+        } else {
+          $('#toggleHistory').text('查詢紀錄(展開)')
+        }
+        $('#historyTable').toggle()
       })
 
       function delay(duration) {
@@ -238,6 +281,29 @@
           }, duration)
         })
       }
+
+      function refreshHistory() {
+        var queryHistory = localStorage.getItem("queryHistory") || "[]"
+        queryHistory = JSON.parse(queryHistory)
+        $('#historyTable tbody').empty()
+
+        queryHistory.forEach((record, index) => {
+          var queryString = record.queryString
+          var query = decodeURIComponent(queryString)
+          var queries = query.split("&")
+          var child = `<tr><td>${index + 1}</td>`
+          queries.forEach(q => {            
+            child += `<td>${q.slice(q.indexOf("=") + 1)}</td>`
+          })
+          child += `<td>${record.queryResult}</td>`
+          child += '</tr>'
+          $('#historyTable tbody').append(child)
+        })
+        
+
+        return queryHistory
+      }
+
     </script>
   </body>
 </html>
