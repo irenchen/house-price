@@ -14,6 +14,3 @@ git commit -m '...'
 # deploy app to heroku cloud server
 git push heroku master
 
-# create a new branch and switch to it
-git checkout -b testing
-
