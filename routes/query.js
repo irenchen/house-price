@@ -7,6 +7,7 @@ var queryService = require('../service/queryService');
 
 /* POST handle query */
 router.post('/opt1', function(req, res, next) {
+  console.log("remote ip : ", req.connection.remoteAddress)
   var fields = req.body
   console.log(JSON.stringify(fields, null, 2))
 
@@ -24,6 +25,7 @@ router.post('/opt1', function(req, res, next) {
 
 /* POST handle query */
 router.post('/opt2', upload.array(), function(req, res, next) {
+  console.log("remote ip : ", req.connection.remoteAddress)
   var fields = req.body
   console.log(JSON.stringify(fields, null, 2))
   

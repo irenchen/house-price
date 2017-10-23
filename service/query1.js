@@ -26,10 +26,10 @@ try {
 page.onConsoleMessage = function(msg) {
 	console.log(msg)
 }
-page.onResourceReceived = function(response) {
-    pageResponses[response.url] = response.status;
-    fs.write(CookieJar, JSON.stringify(phantom.cookies), "w");
-};
+// page.onResourceReceived = function(response) {
+//     pageResponses[response.url] = response.status;
+//     fs.write(CookieJar, JSON.stringify(phantom.cookies), "w");
+// };
 if(fs.isFile(CookieJar))
     Array.prototype.forEach.call(JSON.parse(fs.read(CookieJar)), function(x){
         phantom.addCookie(x);
